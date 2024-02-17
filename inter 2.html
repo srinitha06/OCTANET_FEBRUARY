@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website Project Tasks</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('https://th.bing.com/th/id/OIP.vhkxHUmYpwbTLUan_Gs8cgHaJe?rs=1&pid=ImgDetMain');
+             background-repeat: no-repeat;
+             background-attachment: fixed; 
+         background-size: 100% 100%;
+}
+        
+        .task-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .task-item {
+            margin-bottom: 10px;
+        }
+        .completed {
+            text-decoration: line-through;
+        }
+    
+    </style>
+</head>
+<body>
+    <h1>Website Project Tasks</h1>
+    <form id="task-form">
+        <input type="text" id="task-name" placeholder="Task Name" required>
+        <input type="text" id="task-deadline" placeholder="Deadline" required>
+        <input type="text" id="task-priority" placeholder="Priority" required>
+        <input type="text" id="task-labels" placeholder="Labels (comma-separated)">
+        <button type="submit">Add Task</button>
+    </form>
+    <ul id="task-list" class="task-list"></ul>
+
+    <script>
+        const taskForm = document.getElementById('task-form');
+        const taskList = document.getElementById('task-list');
+
+        taskForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('task-name').value;
+            const deadline = document.getElementById('task-deadline').value;
+            const priority = document.getElementById('task-priority').value;
+            const labels = document.getElementById('task-labels').value.split(',');
+            addTask(name, deadline, priority, labels);
+            taskForm.reset();
+        });
+
+        function addTask(name, deadline, priority, labels) {
+            const taskItem = document.createElement('li');
+            taskItem.className = 'task-item';
+            taskItem.innerHTML = `
+                <input type="checkbox" class="task-checkbox" onchange="toggleTaskStatus(this)">
+                <span class="task-name">${name}</span> - 
+                <span class="task-deadline">${deadline}</span> - 
+                <span class="task-priority">${priority}</span> - 
+                <span class="task-labels">${labels.join(', ')}</span>
+            `;
+            taskList.appendChild(taskItem);
+        }
+
+        function toggleTaskStatus(checkbox) {
+            const taskName = checkbox.nextElementSibling.textContent;
+            const taskSpan = checkbox.nextElementSibling;
+            if (checkbox.checked) {
+                taskSpan.classList.add('completed');
+            } else {
+                taskSpan.classList.remove('completed');
+            }
+        }
+    </script>
+</body>
+</html>
